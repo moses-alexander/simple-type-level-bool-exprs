@@ -18,19 +18,16 @@ import GHC.TypeLits
 
 
 main :: IO ()
-main = do
-    print "..."
-    let a = Proxy :: Proxy (Rdc (Neg T))
-    let b = unproxy a
-    -- let c = proxy $ RNN (NN (NT Tt))
-    -- let d = unproxy c
-    print (b :: F)
+main = do -- need Proxys for type family reduction
+    let a = unproxy (Proxy :: Proxy (Rdc (Neg (And (Or T (If T F)) T))))
+    let b = unproxy (Proxy :: Proxy (Rdc (Neg F)))
+    print (a :: F)
+    print (b :: T)
     {- 
     won't compile, GHC will complain that the expected type 'F'
     doesn't match the type 'T' i'm asking for.
-    print (b :: T)
+    print (a :: T)
     -}
-    -- print (d :: T)
 
 
 data T = Tt deriving (Show, Typeable)
@@ -129,22 +126,16 @@ type family Rdc e :: * where
     Rdc (Iff x y)               = Rdc (Iff (Rdc x) (Rdc y))
     Rdc _                       = Rdcd U
 
-instance Semigroup (Rdcd T) where
-    RT Tt <> _ = RT Tt
-    _ <> RT Tt = RT Tt
-    _ <> _     = RU Tt
+-- instance Semigroup (Rdcd T) where
+--     RT Tt <> _ = RT Tt
+--     _ <> RT Tt = RT Tt
+--     _ <> _     = RU Tt
 
-instance Semigroup (Rdcd F) where
-    RF Ff <> _ = RF Ff
-    _ <> RF Ff = RF Ff
-    _ <> _     = RU Ff
+-- instance Semigroup (Rdcd F) where
+--     RF Ff <> _ = RF Ff
+--     _ <> RF Ff = RF Ff
+--     _ <> _     = RU Ff
 
-proxy :: a -> Proxy a
-proxy x = Proxy :: Proxy (x)
-
-unwrap :: Rdcd a -> a
-unwrap (RT Tt) = Tt
-unwrap (RF Ff) = Ff
 
 class Unproxy a where
     unproxy :: Proxy (Rdcd a) -> a
