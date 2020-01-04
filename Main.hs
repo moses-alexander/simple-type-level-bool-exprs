@@ -14,7 +14,6 @@
 module Main where
 
 import Data.Typeable
-import GHC.TypeLits
 
 
 main :: IO ()
