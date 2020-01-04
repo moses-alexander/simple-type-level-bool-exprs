@@ -13,12 +13,24 @@
 
 module Main where
 
-import Data.Data
--- import Data.Singletons
-import Data.Proxy
-import Data.Typeable as T
+import Data.Typeable
 import GHC.TypeLits
-import Type.Reflection as TR
+
+
+main :: IO ()
+main = do
+    print "..."
+    let a = Proxy :: Proxy (Rdc (Neg T))
+    let b = unproxy a
+    -- let c = proxy $ RNN (NN (NT Tt))
+    -- let d = unproxy c
+    print (b :: F)
+    {- 
+    won't compile, GHC will complain that the expected type 'F'
+    doesn't match the type 'T' i'm asking for.
+    print (b :: T)
+    -}
+    -- print (d :: T)
 
 
 data T = Tt deriving (Show, Typeable)
@@ -142,21 +154,6 @@ instance Unproxy T where
 
 instance Unproxy F where
     unproxy x = Ff
-
-main :: IO ()
-main = do
-    print "..."
-    let a = Proxy :: Proxy (Rdc (Neg T))
-    let b = unproxy a
-    -- let c = proxy $ RNN (NN (NT Tt))
-    -- let d = unproxy c
-    print (b :: F)
-    {- 
-    won't compile, GHC will complain that the expected type 'F'
-    doesn't match the type 'T' i'm asking for.
-    print (b :: T)
-    -}
-    -- print (d :: T)
 
 
 -- test0 = Proxy :: Proxy (Rdc (U))
