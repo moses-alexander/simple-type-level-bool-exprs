@@ -34,13 +34,6 @@ data T = Tt deriving (Show, Typeable)
 data F = Ff deriving (Show, Typeable)
 data U = Uu deriving (Show, Typeable)
 
-data Expr a where
-    ET :: T       -> Expr T
-    EF :: F       -> Expr F
-    EN :: Neg a   -> Expr (Neg a)
-    EA :: And a b -> Expr (And a b)
-    EO :: Or a b  -> Expr (Or a b)
-    ER :: Rdcd a  -> Expr (Rdcd a)
 
 data Neg a where
     NT :: T     -> Neg T
